@@ -665,6 +665,13 @@ func (q *QMP) executeCommand(ctx context.Context, name string, args map[string]i
 	return err
 }
 
+func (q *QMP) ExecuteRawCommand(ctx context.Context, name string, args map[string]interface{},
+	filter *qmpEventFilter) error {
+
+	_, err := q.executeCommandWithResponse(ctx, name, args, nil, filter)
+	return err
+}
+
 // QMPStart connects to a unix domain socket maintained by a QMP instance.  It
 // waits to receive the QMP welcome message via the socket and spawns some go
 // routines to manage the socket.  The function returns a *QMP which can be
