@@ -29,6 +29,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"os/user"
 	"strconv"
 	"strings"
 	"syscall"
@@ -1964,11 +1965,23 @@ func LaunchCustomQemu(ctx context.Context, path string, params []string, fds []*
 
 	cmd.SysProcAttr = attr
 	if attr == nil {
+		u, err := user.Current()
+		if err != nil {
+			t.Fatal(err)
+		}
+		uid, err := strconv.ParseInt(u.Uid, 0, 32)
+		if err != nil {
+			t.Fatal(err)
+		}
+		gid, err := strconv.ParseInt(u.Gid, 0, 32)
+		if err != nil {
+			t.Fatal(err)
+		}
 		cmd.SysProcAttr = &syscall.SysProcAttr{
-			// Credential: &syscall.Credential{
-			// 	Uid: uint32(uid),
-			// 	Gid: uint32(gid),
-			// },
+			Credential: &syscall.Credential{
+				Uid: uint32(uid),
+				Gid: uint32(gid),
+			},
 			AmbientCaps: []uintptr{12/*CAP_NET_ADMIN*/},
 		}
 	}
