@@ -1963,6 +1963,15 @@ func LaunchCustomQemu(ctx context.Context, path string, params []string, fds []*
 	}
 
 	cmd.SysProcAttr = attr
+	if attr == nil {
+		cmd.SysProcAttr = &syscall.SysProcAttr{
+			// Credential: &syscall.Credential{
+			// 	Uid: uint32(uid),
+			// 	Gid: uint32(gid),
+			// },
+			AmbientCaps: []uintptr{CAP_NET_ADMIN},
+		}
+	}
 
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
