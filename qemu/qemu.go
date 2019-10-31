@@ -1969,7 +1969,7 @@ func LaunchCustomQemu(ctx context.Context, path string, params []string, fds []*
 			// 	Uid: uint32(uid),
 			// 	Gid: uint32(gid),
 			// },
-			AmbientCaps: []uintptr{CAP_NET_ADMIN},
+			AmbientCaps: []uintptr{12/*CAP_NET_ADMIN*/},
 		}
 	}
 
