@@ -1967,15 +1967,15 @@ func LaunchCustomQemu(ctx context.Context, path string, params []string, fds []*
 	if attr == nil {
 		u, err := user.Current()
 		if err != nil {
-			t.Fatal(err)
+			return "", err
 		}
 		uid, err := strconv.ParseInt(u.Uid, 0, 32)
 		if err != nil {
-			t.Fatal(err)
+			return "", err
 		}
 		gid, err := strconv.ParseInt(u.Gid, 0, 32)
 		if err != nil {
-			t.Fatal(err)
+			return "", err
 		}
 		cmd.SysProcAttr = &syscall.SysProcAttr{
 			Credential: &syscall.Credential{
